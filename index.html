@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Futebol Highlights AI</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1020;color:#fff;font-family:Arial,sans-serif}
+main{max-width:650px;margin:auto;padding:22px}
+h1{font-size:29px}
+h1 span{color:#43e6a0}
+p{color:#b9c4d5;line-height:1.5}
+.card{background:#151d30;padding:18px;border-radius:16px;margin:18px 0}
+label{display:block;margin:15px 0 7px;font-weight:bold}
+input,select{width:100%;padding:13px;border-radius:9px;border:1px solid #3b4962;background:#0b1020;color:white;font-size:16px}
+button{width:100%;padding:15px;border:0;border-radius:10px;background:#39d98a;color:#06150e;font-weight:bold;font-size:16px;margin-top:18px}
+.small{font-size:13px;color:#9eacc1}
+#status{white-space:pre-wrap;color:#43e6a0}
+</style>
+</head>
+<body>
+<main>
+<h1>⚽ Futebol <span>Highlights AI</span></h1>
+<p>Prepare os dados para criar os melhores momentos do seu jogador.</p>
+
+<div class="card">
+<h2>🎥 Partida</h2>
+<label for="video">Link da partida no YouTube</label>
+<input id="video" type="url" placeholder="https://youtube.com/...">
+
+<label for="player">Nome do jogador</label>
+<input id="player" value="Carlos Augusto">
+
+<label for="number">Número da camisa</label>
+<input id="number" type="number" value="10" min="0" max="99">
+
+<label for="front">Foto de frente</label>
+<input id="front" type="file" accept="image/*">
+
+<label for="back">Foto de costas</label>
+<input id="back" type="file" accept="image/*">
+
+<label for="format">Formato do vídeo</label>
+<select id="format">
+<option value="both">Vertical 9:16 + horizontal 16:9</option>
+<option value="vertical">Vertical 9:16</option>
+<option value="horizontal">Horizontal 16:9</option>
+</select>
+
+<button id="prepare">Preparar análise</button>
+<p id="status" role="status">Aguardando os dados.</p>
+</div>
+
+<div class="card">
+<h2>🎬 Próxima etapa</h2>
+<p>O sistema precisará analisar a gravação, localizar o jogador, selecionar os lances e montar os vídeos.</p>
+<p class="small">Esta versão é uma interface inicial. A análise por IA e a exportação dos cortes ainda precisam ser conectadas.</p>
+</div>
+</main>
+<script>
+document.getElementById('prepare').addEventListener('click',function(){
+const video=document.getElementById('video').value.trim();
+const player=document.getElementById('player').value.trim();
+const number=document.getElementById('number').value;
+const front=document.getElementById('front').files[0];
+const back=document.getElementById('back').files[0];
+const format=document.getElementById('format').value;
+const status=document.getElementById('status');
+
+if(!video||!player||number===''){
+status.textContent='Preencha o link da partida, o nome e o número da camisa.';
+return;
+}
+try{
+const url=new URL(video);
+if(!['youtube.com','www.youtube.com','m.youtube.com','youtu.be','www.youtube.com'].includes(url.hostname)){
+status.textContent='Insira um link válido do YouTube.';
+return;
+}
+}catch(e){
+status.textContent='Confira o link da partida.';
+return;
+}
+status.textContent=
+'Dados preparados!\\n'+
+'Jogador: '+player+'\\n'+
+'Camisa: '+number+'\\n'+
+'Foto de frente: '+(front?'selecionada':'ainda não enviada')+'\\n'+
+'Foto de costas: '+(back?'selecionada':'ainda não enviada')+'\\n'+
+'Formato: '+format+'\\n\\n'+
+'Próximo passo: conectar o motor de análise de vídeo. Nenhum corte foi processado ainda.';
+});
+</script>
+</body>
+</html>
